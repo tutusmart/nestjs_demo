@@ -2,15 +2,38 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:32:02
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-02 13:15:09
+ * @LastEditTime: 2022-07-04 12:55:36
  */
-import { IsInt, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
-  name: string;
-  @IsInt()
-  age: number;
+  userName: string;
+
+  @IsString()
+  cellphone: string;
+
+  @IsString()
+  password: string;
+
+  @IsNumber()
+  sex: number;
+
+  @IsString()
+  hobby: string;
+
+  @IsString()
+  dateOfBirth: string;
+
+  @IsString()
+  address: string;
+
+  @IsString()
+  email: string;
+
+  @IsString()
+  job: string;
+
   @IsString()
   remake: string;
 }
