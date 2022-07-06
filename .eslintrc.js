@@ -1,3 +1,9 @@
+/*
+ * @Author: tuWei
+ * @Date: 2022-07-02 10:44:27
+ * @LastEditors: tuWei
+ * @LastEditTime: 2022-07-07 00:53:02
+ */
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -21,5 +27,6 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    "no-unused-vars": false
   },
 };

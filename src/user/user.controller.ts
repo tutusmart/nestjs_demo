@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 11:40:07
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 00:43:13
+ * @LastEditTime: 2022-07-07 01:23:39
  */
 import {
   Body,
@@ -41,15 +41,20 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserById(@Query('version') id: string) {
-    const data = await this.userService.findOne(id);
+  @UseGuards(JwtAuthGuardUser)
+  async getUserById(@Param() params: UpdateUserDto) {
+    const { id } = params;
+    const data = await this.userService.findOne(params.id);
+    console.log(params);
     return {
       message: '查询成功',
+      flag: true,
       data,
     };
   }
 
   @Post('postList')
+  @UseGuards(JwtAuthGuardUser)
   userListDto(@Body() cud: CreateUserDto) {
     return cud;
   }
@@ -64,8 +69,9 @@ export class UserController {
   }
 
   @Post('update')
+  @UseGuards(JwtAuthGuardUser)
   async updateUser(@Body() updateUser: UpdateUserDto) {
-    // const data = await this.userService.findOne(updateUser.id);
+    console.log(updateUser);
     const user = await this.userService.update(updateUser.id, updateUser);
     return {
       message: '修改成功',
@@ -74,6 +80,7 @@ export class UserController {
   }
 
   @Post('remove')
+  @UseGuards(JwtAuthGuardUser)
   async removeUser(@Body('id') id: any) {
     const user = await this.userService.remove(id);
     return {

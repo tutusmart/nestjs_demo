@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:11:34
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-06 16:53:04
+ * @LastEditTime: 2022-07-07 01:11:58
  */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -65,15 +65,31 @@ export class UserService {
     return user;
   }
 
+  
+
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.preload({
-      id: id,
-      ...updateUserDto,
+    updateUserDto.updatedAt = new Date();
+    const isExist = await this.userRepository.count({
+      where: {
+        id,
+      },
     });
-    if (!user) {
-      throw new NotFoundException('user is null');
+    if (isExist > 1) {
+      return {
+        statusCode: 201,
+        message: '已存在',
+      };
     }
-    return this.userRepository.save(user);
+    return await this.userRepository.update(id, updateUserDto);
+    // const user = await this.userRepository.preload({
+    //   id: id,
+    //   ...updateUserDto,
+    // });
+    // console.log('=====', id);
+    // if (!user) {
+    //   throw new NotFoundException('user is null');
+    // }
+    // return this.userRepository.save(user);
   }
 
   async remove(id: string) {
