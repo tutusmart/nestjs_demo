@@ -8,7 +8,7 @@ import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { IsString } from 'class-validator';
 export class QueryUserDto extends PaginationQueryDto {
   @IsString()
-  userName: string;
+  username: string;
 
   @IsString()
   cellphone: string;

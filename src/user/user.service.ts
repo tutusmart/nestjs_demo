@@ -2,13 +2,14 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:11:34
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-04 12:58:59
+ * @LastEditTime: 2022-07-06 16:53:04
  */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
 import { Like, Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { cryptoString } from '../libs/lib';
 
 import { User } from './entities/user.entity';
 @Injectable()
@@ -23,10 +24,10 @@ export class UserService {
   }
 
   async findAll(queryDto: QueryUserDto) {
-    const { current, pageSize, userName, cellphone } = queryDto;
+    const { current, pageSize, username, cellphone } = queryDto;
     return await this.userRepository.find({
       where: {
-        userName: Like(`%${userName}%`),
+        username: Like(`%${username}%`),
         cellphone: Like(`%${cellphone}%`),
       },
       skip: current - 1,
@@ -35,6 +36,10 @@ export class UserService {
   }
 
   create(createUserDto: any) {
+    const { password, createdAt } = createUserDto;
+    createUserDto.password = cryptoString(password);
+    createUserDto.createdAt = createdAt || new Date();
+    createUserDto.updatedAt = new Date();
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }
@@ -51,7 +56,16 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async findOneByName(username: any): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
+    return user;
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.preload({
       id: id,
       ...updateUserDto,
@@ -59,7 +73,6 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('user is null');
     }
-    console.log(user);
     return this.userRepository.save(user);
   }
 

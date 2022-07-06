@@ -2,24 +2,39 @@
  * @Author: tuWei
  * @Date: 2022-07-02 11:40:07
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-04 13:00:00
+ * @LastEditTime: 2022-07-07 00:43:13
  */
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Request,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
+import { JwtAuthGuardUser } from 'src/auth/guards/jwt-auth.guard';
+import { Log } from 'src/libs/utils';
+// import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('userList')
-  async getUserList(@Body() queryUserDto: QueryUserDto) {
+  @UseGuards(JwtAuthGuardUser)
+  async getUserList(@Body() queryUserDto: QueryUserDto, @Request() req) {
+    Log({ req, user: req.user });
     const data = await this.userService.findAll(queryUserDto);
     const total = await this.userService.findAndCount();
     return {
+      message: '查询成功',
       data,
       total: total[1],
     };
@@ -27,9 +42,11 @@ export class UserController {
 
   @Get(':id')
   async getUserById(@Query('version') id: string) {
-    console.log(id);
     const data = await this.userService.findOne(id);
-    return { data };
+    return {
+      message: '查询成功',
+      data,
+    };
   }
 
   @Post('postList')
@@ -42,6 +59,7 @@ export class UserController {
     const data = await this.userService.create(cud);
     return {
       data,
+      message: '查询成功',
     };
   }
 
@@ -50,13 +68,13 @@ export class UserController {
     // const data = await this.userService.findOne(updateUser.id);
     const user = await this.userService.update(updateUser.id, updateUser);
     return {
+      message: '修改成功',
       data: user,
     };
   }
 
   @Post('remove')
   async removeUser(@Body('id') id: any) {
-    console.log('1212', id);
     const user = await this.userService.remove(id);
     return {
       data: user,

@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:32:41
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-04 12:55:39
+ * @LastEditTime: 2022-07-06 15:24:39
  */
 import {
   Entity,
@@ -15,13 +15,15 @@ import { Dept } from './dept.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
-  userName: string;
+  username: string;
 
-  @Column()
+  @Column({
+    select: true,
+  })
   password: string;
 
   @Column()
@@ -48,7 +50,15 @@ export class User {
   @Column()
   remake: string;
 
-  @ManyToMany(type => Dept, dept => dept.puser)
+  @Column({
+    select: false,
+  })
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
+
+  @ManyToMany((type) => Dept, (dept) => dept.puser)
   @JoinTable()
   depts: Dept[];
 }

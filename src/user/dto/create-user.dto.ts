@@ -8,7 +8,7 @@ import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
-  userName: string;
+  username: string;
 
   @IsString()
   cellphone: string;
