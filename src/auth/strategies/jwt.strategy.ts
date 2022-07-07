@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-06 12:44:41
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 00:31:32
+ * @LastEditTime: 2022-07-07 19:43:41
  */
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -24,11 +24,8 @@ export class JwtStrategyUser extends PassportStrategy(Strategy, 'userjwt') {
   }
   async validate(payload: any) {
     console.log('payload', payload);
-    const { username, cellphone } = payload;
-
     return {
-      username,
-      cellphone,
+      ...payload
     };
   }
 }

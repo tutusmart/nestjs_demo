@@ -2,14 +2,15 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:32:41
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-06 15:24:39
+ * @LastEditTime: 2022-07-07 17:14:46
  */
+import { Posts } from 'src/posts/entities/posts.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  JoinTable,
-  ManyToMany,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Dept } from './dept.entity';
 
@@ -58,7 +59,9 @@ export class User {
   @Column()
   updatedAt: Date;
 
-  @ManyToMany((type) => Dept, (dept) => dept.puser)
-  @JoinTable()
-  depts: Dept[];
+  // @Column()
+  // deptId: string;
+
+  @OneToMany(() => Posts, posts => posts.user)
+  posts: Posts[]
 }

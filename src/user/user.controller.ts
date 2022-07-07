@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 11:40:07
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 01:23:39
+ * @LastEditTime: 2022-07-07 12:27:10
  */
 import {
   Body,
@@ -64,7 +64,7 @@ export class UserController {
     const data = await this.userService.create(cud);
     return {
       data,
-      message: '查询成功',
+      message: '添加成功',
     };
   }
 

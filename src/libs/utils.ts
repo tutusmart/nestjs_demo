@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-06 12:44:56
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-06 19:27:59
+ * @LastEditTime: 2022-07-07 19:50:38
  */
 import { Logger } from '@nestjs/common';
 import jwt_decode from 'jwt-decode';
@@ -21,7 +21,6 @@ export const Log = (params = {}) => {
   const userId = decoded[userIdStr];
 
   const name = `${req.method}:${req.url}`;
-  console.log('LogLogLogLogLogLog-------', name);
 
   logger.warn(`${username}/${userId}`, name);
   logger.warn(req.headers['user-agent'], name);

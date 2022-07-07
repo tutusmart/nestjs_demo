@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:11:34
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 01:11:58
+ * @LastEditTime: 2022-07-07 14:09:31
  */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,14 +25,17 @@ export class UserService {
 
   async findAll(queryDto: QueryUserDto) {
     const { current, pageSize, username, cellphone } = queryDto;
-    return await this.userRepository.find({
-      where: {
-        username: Like(`%${username}%`),
-        cellphone: Like(`%${cellphone}%`),
-      },
-      skip: current - 1,
-      take: (current - 1) * pageSize,
-    });
+    // return await this.userRepository.find({
+    //   where: {
+    //     username: Like(`%${username}%`),
+    //     cellphone: Like(`%${cellphone}%`),
+    //   },
+    //   skip: current - 1,
+    //   take: (current - 1) * pageSize,
+    // });
+    let sql = 'select * from user where username ' + `LIKE '%${username}%' or `+ 'cellphone ' + `LIKE '%${cellphone}%'` + ` limit ${(current - 1) * pageSize}, ${pageSize}`;
+    console.log(sql);
+    return await this.userRepository.query(sql)
   }
 
   create(createUserDto: any) {
