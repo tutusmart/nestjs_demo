@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 10:44:27
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 13:47:32
+ * @LastEditTime: 2022-07-09 00:00:52
  */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
+import { CategoryModule } from './category/category.module';
 
 const dbInfo = {
   host: 'localhost',
@@ -35,6 +36,7 @@ const { host, port, username, password } = dbInfo;
       synchronize: true,
     }),
     PostsModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

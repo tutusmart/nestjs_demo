@@ -2,17 +2,18 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:32:02
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 23:43:23
+ * @LastEditTime: 2022-07-08 19:34:55
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
+import { User } from 'src/user/entities/user.entity';
 
 export class CreatePostDto {
   @IsString()
   title: string;
 
   @ApiProperty()
-  user:string;
+  user: User;
 
   @ApiProperty()
   @IsString()
@@ -22,4 +23,7 @@ export class CreatePostDto {
   @IsString()
   remake: string;
 
+  @ApiProperty()
+  @IsArray()
+  categories: [];
 }

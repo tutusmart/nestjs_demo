@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:11:34
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 14:09:31
+ * @LastEditTime: 2022-07-08 17:48:01
  */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -43,8 +43,7 @@ export class UserService {
     createUserDto.password = cryptoString(password);
     createUserDto.createdAt = createdAt || new Date();
     createUserDto.updatedAt = new Date();
-    const user = this.userRepository.create(createUserDto);
-    return this.userRepository.save(user);
+    return this.userRepository.save(createUserDto);
   }
 
   async findOne(id: any) {

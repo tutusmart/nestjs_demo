@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-07 15:02:53
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 23:49:57
+ * @LastEditTime: 2022-07-08 21:28:03
  */
 import { Body, Controller, Post, UseGuards, Request, Get, Param } from '@nestjs/common';
 import { JwtAuthGuardUser } from 'src/auth/guards/jwt-auth.guard';
@@ -19,7 +19,6 @@ export class PostsController {
   @Post('create')
   @UseGuards(JwtAuthGuardUser)
   async createUser(@Body() qto: CreatePostDto, @Request() req) {
-    console.log(qto, req.user);
     qto.user = req.user.userId;
     const data = await this.postsService.create(qto);
     return {
@@ -32,7 +31,6 @@ export class PostsController {
   @Post('list')
   @UseGuards(JwtAuthGuardUser)
   async getList(@Body() qto: QueryPostDto, @Request() req) {
-    console.log( req.user );
     qto.userId = req.user.userId;
     const data = await this.postsService.findAll(qto);
     return {
@@ -55,10 +53,19 @@ export class PostsController {
   @UseGuards(JwtAuthGuardUser)
   async updateById(@Body() uto: UpdatePostDto, @Request() req) {
     uto.user = req.user.userId;
-    console.log(2121221);
     const data = await this.postsService.update(uto);
     return {
       message: '更新成功',
+      flag: true,
+      data,
+    };
+  }
+
+  @Get('/remove/:id')
+  @UseGuards(JwtAuthGuardUser)
+  async remove(@Param() params: UpdatePostDto, @Request() req) {
+    const data = await this.postsService.remove(params);
+    return {
       flag: true,
       data,
     };
