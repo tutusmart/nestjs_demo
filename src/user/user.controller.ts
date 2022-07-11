@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 11:40:07
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-07 12:27:10
+ * @LastEditTime: 2022-07-10 13:01:18
  */
 import {
   Body,
@@ -44,7 +44,7 @@ export class UserController {
   @UseGuards(JwtAuthGuardUser)
   async getUserById(@Param() params: UpdateUserDto) {
     const { id } = params;
-    const data = await this.userService.findOne(params.id);
+    const data = await this.userService.findOne(id);
     console.log(params);
     return {
       message: '查询成功',

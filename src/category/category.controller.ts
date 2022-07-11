@@ -2,9 +2,9 @@
  * @Author: tuWei
  * @Date: 2022-07-08 16:18:36
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-08 17:59:26
+ * @LastEditTime: 2022-07-11 17:20:23
  */
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuardUser } from 'src/auth/guards/jwt-auth.guard';
 import { CategoryService } from './category.service';
 import { QueryCategoryDto } from './dto/query-category.dto';
@@ -30,11 +30,40 @@ export class CategoryController {
   async getCategoryList(@Body() qto: QueryCategoryDto) {
     console.log(qto);
     const data = await this.categoryService.findAll(qto);
-    return {
-      data,
-      flag: true,
-      message: '查询成功',
-    };
+    return data;
   }
   
+  @Get('/queryById/:id')
+  @UseGuards(JwtAuthGuardUser)
+  async queryById(@Param() params: any) {
+    const { id } = params;
+    const data = await this.categoryService.findOne(id);
+    return {
+      flag: true,
+      data,
+    };
+  }
+
+  @Post('/update')
+  @UseGuards(JwtAuthGuardUser)
+  async update(@Body() params: any) {
+    console.log(params);
+    const data = await this.categoryService.update(params);
+    return {
+      flag: true,
+      data,
+      message: '保存成功'
+    };
+  }
+
+  @Post('/delete')
+  @UseGuards(JwtAuthGuardUser)
+  async delete(@Body() params: any) {
+    const data = await this.categoryService.delete(params);
+    return {
+      flag: true,
+      data,
+      message: '保存成功'
+    };
+  }
 }
