@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 20:52:59
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-09 01:38:31
+ * @LastEditTime: 2022-07-12 17:26:07
  */
 import { Category } from 'src/category/entities/category.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -25,8 +25,10 @@ export class Posts {
   @ManyToOne(() => User, user => user.posts)
   user: User;
 
-  @ManyToMany((type) => Category, (category) => category.posts)
-  @JoinTable()
+  @ManyToMany((type) => Category, (category) => category.posts, {
+    cascade: ["insert", "update"],
+  })
+  @JoinTable({ name: "posts_categories_category" })
   categories: Category[]
 
   @Column()

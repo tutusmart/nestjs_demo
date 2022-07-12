@@ -2,9 +2,9 @@
  * @Author: tuWei
  * @Date: 2022-07-07 15:03:02
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-12 01:46:46
+ * @LastEditTime: 2022-07-12 18:30:00
  */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Post } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/category/entities/category.entity';
 import { UserService } from 'src/user/user.service';
@@ -107,62 +107,39 @@ export class PostsService {
   async update(uto: UpdatePostDto){
     const { id } = uto; 
     const { user } = uto;
-    let p = new Posts();
-    const categories = [];
-    // const pccc = await this.dataSource
-    // .getRepository(Posts)
-    // .createQueryBuilder("posts")
-    // .leftJoinAndSelect("posts.categories", "category")
-    // .getMany()
-    //  console.log(pccc, '===============');
-    if(uto.categories && uto.categories.length > 0){
-      for (let index = 0; index < uto.categories.length; index++) {
-        let lisOne = await this.manager.findBy(Category, {
-          id: uto.categories[index],
-        });
-        // let lisOne = uto.categories[index];
-        categories.push(lisOne);
-      }
+    uto.updatedAt = new Date();
+    uto['createdAt'] = new Date();
+    const categories = 
+    await this.dataSource
+          .createQueryBuilder()
+          .relation(Posts, "categories")
+          .of(id) // you can use just post id as well
+          .loadMany()
+    uto.user = user;
+    if(categories.length > 0) {
+      await this.dataSource
+            .createQueryBuilder()
+            .relation(Posts, "categories")
+            .of(id)
+            .remove(categories.map(v=> v.id))
     }
-    Object.assign(p, uto);
-    p.categories = categories;
-    p.updatedAt = new Date();
-    const pccc = await this.dataSource
-    .createQueryBuilder()
-    .leftJoinAndSelect("posts.categories", "category")
-    .update(Posts)
-    .set(p)
-    .where("id = :id", { id })
-    .execute()
-    // return await this.postRepository.update(id, p);
-    // return await this.dataSource.manager.update(Posts, id, p);
-    // const data = await this.dataSource
-    // .createQueryBuilder()
-    // .update(Posts)
-    // .set(p)
-    // .where("id = :id", { id })
-    // .execute()
-    // console.log(data);
-    // await manager.delete(PostsCatogory, { questionId: uUser.id });
-    // console.log(p);
-    // post.categories = await this.dataSource
-    // .createQueryBuilder()
-    // .relation(Posts, "categories")
-    // .of(post) // you can use just post id as well
-    // .loadMany()
-    // return await this.dataSource
-    // .createQueryBuilder()
-    // .relation(Posts, "categories")
-    // .update(Posts)
-    // .set(post)
-    // .where("id = :id", { id: 1 })
-    // .execute()
-    // return await postRepository.save(post);
-    // return await this.dataSource.manager.update('posts', id, p);
-    // return await this.dataSource.createQueryBuilder().update('Posts')
-    // .set(p)
-    // .where("id = :id", { id})
-    // .execute();
+    
+     //新增现在的分类数据
+    if(uto.categories && uto.categories.length > 0) {
+        await this.dataSource
+          .createQueryBuilder()
+          .relation(Posts, "categories")
+          .of(id)
+          .add(uto.categories)
+    }
+    //categories 不能直接update 需要上面的操作才能更新
+    delete uto.categories;
+    return this.dataSource
+      .createQueryBuilder()
+      .update(Posts)
+      .set(uto)
+      .where("id = :id", { id })
+      .execute()
   }
 
   async remove(uto: UpdatePostDto){

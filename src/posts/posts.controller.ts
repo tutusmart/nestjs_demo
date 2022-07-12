@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-07 15:02:53
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-11 17:16:17
+ * @LastEditTime: 2022-07-12 12:55:33
  */
 import { Body, Controller, Post, UseGuards, Request, Get, Param } from '@nestjs/common';
 import { JwtAuthGuardUser } from 'src/auth/guards/jwt-auth.guard';
@@ -71,3 +71,7 @@ export class PostsController {
     };
   }
 }
+function Transaction() {
+  throw new Error('Function not implemented.');
+}
+
