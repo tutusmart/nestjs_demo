@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-05 16:04:36
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-06 21:02:26
+ * @LastEditTime: 2022-07-13 19:39:06
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -44,7 +44,6 @@ export class AuthService {
 
   // 登录
   async login(user: any) {
-    console.log('login  xxxxxx', user);
     const payload = {
       username: user.username,
       cellphone: user.cellphone,

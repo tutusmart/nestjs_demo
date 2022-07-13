@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 12:11:34
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-08 17:48:01
+ * @LastEditTime: 2022-07-13 19:40:16
  */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -67,14 +67,11 @@ export class UserService {
     return user;
   }
 
-  
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     updateUserDto.updatedAt = new Date();
     const isExist = await this.userRepository.count({
-      where: {
-        id,
-      },
+      where: { id },
     });
     if (isExist > 1) {
       return {

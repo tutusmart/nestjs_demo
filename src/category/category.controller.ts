@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-08 16:18:36
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-11 17:20:23
+ * @LastEditTime: 2022-07-13 18:34:35
  */
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuardUser } from 'src/auth/guards/jwt-auth.guard';
@@ -28,7 +28,6 @@ export class CategoryController {
   @Post('categoryList')
   @UseGuards(JwtAuthGuardUser)
   async getCategoryList(@Body() qto: QueryCategoryDto) {
-    console.log(qto);
     const data = await this.categoryService.findAll(qto);
     return data;
   }
@@ -47,7 +46,6 @@ export class CategoryController {
   @Post('/update')
   @UseGuards(JwtAuthGuardUser)
   async update(@Body() params: any) {
-    console.log(params);
     const data = await this.categoryService.update(params);
     return {
       flag: true,

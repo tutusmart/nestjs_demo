@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-02 20:52:59
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-12 17:26:07
+ * @LastEditTime: 2022-07-13 18:39:37
  */
 import { Category } from 'src/category/entities/category.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -16,7 +16,7 @@ export class Posts {
   @Column()
   title: string;
 
-  @Column()
+  @Column("text")
   content: string;
 
   @Column()

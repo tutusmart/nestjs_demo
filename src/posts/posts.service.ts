@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-07 15:03:02
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-12 18:30:00
+ * @LastEditTime: 2022-07-13 19:41:25
  */
 import { Injectable, NotFoundException, Post } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
@@ -72,7 +72,6 @@ export class PostsService {
     and title Like '%${title}%' and username Like '%${username}%'
     GROUP BY p.id 
     limit ${(current - 1) * pageSize}, ${pageSize}`;
-    console.log(sql);
     const data = await this.postRepository.query(sql);
     const total =  await this.postRepository.query(`select count(id) total from posts`);
     // const list1 =  await this.postRepository.query(`update user set username = '涂威' where id = '8aafc8c3-2148-4174-b54d-32ab578ea066'`);

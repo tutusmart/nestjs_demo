@@ -2,7 +2,7 @@
  * @Author: tuWei
  * @Date: 2022-07-08 16:19:01
  * @LastEditors: tuWei
- * @LastEditTime: 2022-07-11 17:19:17
+ * @LastEditTime: 2022-07-13 19:39:24
  */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,7 +20,6 @@ export class CategoryService {
   create(createDto: any) {
     createDto.createdAt = new Date();
     createDto.updatedAt = new Date();
-    // const data = this.CategoryRepository.create(createDto);
     return this.categoryRepository.save(createDto);
   }
 
@@ -34,7 +33,6 @@ export class CategoryService {
     where name Like '%` + name + `%' 
     GROUP BY c.id 
     limit ${(current - 1) * pageSize}, ${pageSize}`;
-    console.log(sql);
     const data = await this.categoryRepository.query(sql);
     const total =  await this.categoryRepository.query(`select count(id) total from category`);
     return {
@@ -57,7 +55,6 @@ export class CategoryService {
   async update(pam: any){
     if(pam.id){
       const sql = `update category set name = '${pam.name}', remake = '${pam.remake}', updatedAt = '${new Date().toLocaleDateString()}'  where id = '${pam.id}'`;
-      console.log(sql);
       const data = await this.categoryRepository.query(sql);
       return data
     } else {
@@ -68,7 +65,6 @@ export class CategoryService {
   async delete(pam: any){
     if(pam.id) {
       const sql = `delete from category  where id = '${pam.id}'`;
-      console.log(sql);
       const data = await this.dataSource.query(sql);;
       return data;
     }else {
